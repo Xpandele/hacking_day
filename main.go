@@ -16,7 +16,7 @@ func temp() {
 }
 
 func main() {
-	temp()
+	go temp()
 	const key = "1"
 	nIntents := 3
 	sc := bufio.NewReader(os.Stdin)
