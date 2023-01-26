@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"embed"
 	"fmt"
 	"log"
 	"os"
@@ -9,22 +10,23 @@ import (
 	"time"
 )
 
+//go:embed ascii_art/*
+var gameOverFile embed.FS
+
 func temp() {
 	timer := time.NewTimer(time.Second * 5)
 	<-timer.C
-	fmt.Println("\nBOOOOOOOOOOOOOOOOOOM!")
 	shutdown()
 }
 
 func main() {
 	go temp()
-	const key = "1"
-	nIntents := 3
+	const key = "K GRANDE"
 	explota := true
 
 	sc := bufio.NewReader(os.Stdin)
 
-	for ;nIntents > 0; nIntents-- {
+	for nIntents := 3; nIntents > 0; nIntents-- {
 		fmt.Print("Introdueix la contrasenya: ")
 		text, err := sc.ReadString('\n')
 		if err != nil {
@@ -43,17 +45,32 @@ func main() {
 
 	if explota {
 		shutdown()
+	} else {
+		win()
 	}
 }
 
 func shutdown() {
+	var fileData, err = gameOverFile.ReadFile("ascii_art/game_over.txt")
+	if err != nil {
+		log.Fatal("Error getting file")
+	}
 	//command := exec.Command("shutdown", "now")
 
 	//os := runtime.GOOS
 	//if os == "windows" {
-		//command = exec.Command("shutodwn", "/s")
+	//command = exec.Command("shutodwn", "/s")
 	//}
 
 	//command.Run()
-	fmt.Println("Apaga ordinador")
+	fmt.Printf("\n%s\n", string(fileData))
+}
+
+func win() {
+	var fileData, err = gameOverFile.ReadFile("ascii_art/win.txt")
+	if err != nil {
+		log.Fatal("Error getting file")
+	}
+
+	fmt.Printf("\n%s\n", string(fileData))
 }
