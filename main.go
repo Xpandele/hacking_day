@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 )
@@ -55,15 +56,16 @@ func shutdown() {
 	if err != nil {
 		log.Fatal("Error getting file")
 	}
-	//command := exec.Command("shutdown", "now")
+	command := exec.Command("shutdown", "now")
 
 	//os := runtime.GOOS
 	//if os == "windows" {
-	//command = exec.Command("shutodwn", "/s")
+		//command = exec.Command("shutodwn", "/s")
 	//}
 
-	//command.Run()
 	fmt.Printf("\n%s\n", string(fileData))
+	time.Sleep(time.Second * 2)
+	command.Run()
 }
 
 func win() {
