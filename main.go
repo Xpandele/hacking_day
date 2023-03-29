@@ -34,7 +34,7 @@ func main() {
 			log.Fatal("error reading string: ", err)
 		}
 
-		text = strings.Trim(text, "\n\t")
+		text = strings.Trim(text, "\r\n\t")
 		if text == key {
 			explota = false
 			break
@@ -56,16 +56,17 @@ func shutdown() {
 	if err != nil {
 		log.Fatal("Error getting file")
 	}
-	command := exec.Command("shutdown", "now")
 
-	//os := runtime.GOOS
-	//if os == "windows" {
-		//command = exec.Command("shutodwn", "/s")
-	//}
+	command := exec.Command("shutdown", "/s")
+	command.Stderr = os.Stdout
+	command.Stdout = os.Stdout
 
 	fmt.Printf("\n%s\n", string(fileData))
 	time.Sleep(time.Second * 2)
-	command.Run()
+	err = command.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func win() {
